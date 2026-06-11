@@ -7,7 +7,14 @@
     </x-slot>
 
     <div class="page-header">
-        <div class="page-title">✍️ Buat Laporan Baru</div>
+        <div class="page-title" style="display:flex;align-items:center;gap:8px;">
+            <!-- Edit / write icon -->
+            <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 20h9"/>
+                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+            </svg>
+            Buat Laporan Baru
+        </div>
         <div class="page-desc">Isi formulir di bawah dengan detail yang jelas dan lengkap agar laporan segera diproses</div>
     </div>
 
@@ -47,12 +54,27 @@
                     <div class="form-group">
                         <label class="form-label">Klasifikasi Laporan <span>*</span></label>
                         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
-                            @foreach([['Infrastruktur Jalan','🚧'],['Penerangan','💡'],['Drainase','🚰'],['Taman & RTH','🌳'],['Trotoar','🛣️'],['Lainnya','⚠️']] as [$cat, $icon])
+
+                            @php
+                            $categories = [
+                                ['label' => 'Infrastruktur Jalan',],
+                                ['label' => 'Penerangan',],
+                                ['label' => 'Drainase',],
+                                ['label' => 'Taman & RTH',],
+                                ['label' => 'Trotoar',],
+                                ['label' => 'Lainnya',],
+                            ];
+                            @endphp
+
+                            @foreach($categories as $cat)
                             <label style="display:flex;align-items:center;gap:8px;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;transition:all .15s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
-                                <input type="radio" name="_category_hint" value="{{ $cat }}" style="accent-color:var(--primary);">
-                                <span style="font-size:13px;">{{ $icon }} {{ $cat }}</span>
+                                <input type="radio" name="_category_hint" value="{{ $cat['label'] }}" style="accent-color:var(--primary);">
+                                <span style="display:inline-flex;align-items:center;gap:5px;font-size:13px;">
+                                    {{ $cat['label'] }}
+                                </span>
                             </label>
                             @endforeach
+
                         </div>
                     </div>
 
@@ -106,10 +128,7 @@
                         <label class="form-label">Foto Bukti Kerusakan <span>*</span></label>
 
                         <!-- Preview Area -->
-                        <div
-                            x-show="previewUrl"
-                            style="margin-bottom:12px;position:relative;"
-                        >
+                        <div x-show="previewUrl" style="margin-bottom:12px;position:relative;">
                             <img
                                 :src="previewUrl"
                                 style="width:100%;max-height:260px;object-fit:cover;border-radius:8px;border:1.5px solid var(--border);"
@@ -118,18 +137,24 @@
                             <button
                                 type="button"
                                 @click="previewUrl=null; $refs.photoInput.value=''"
-                                style="position:absolute;top:8px;right:8px;width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,.5);color:#fff;border:none;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;"
-                            >✕</button>
+                                style="position:absolute;top:8px;right:8px;width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,.5);color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;"
+                            >
+                                <!-- X close -->
+                                <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round">
+                                    <line x1="18" y1="6" x2="6" y2="18"/>
+                                    <line x1="6"  y1="6" x2="18" y2="18"/>
+                                </svg>
+                            </button>
                         </div>
 
                         <!-- Upload Zone -->
                         <label
                             x-show="!previewUrl"
-                            style="display:flex;flex-direction:column;align-items:center;gap:8px;padding:32px 20px;border:2px dashed var(--border);border-radius:10px;cursor:pointer;transition:border-color .15s;background:var(--bg);"
+                            style="display:flex;flex-direction:column;align-items:center;gap:8px;padding:25px 20px;border:2px dashed var(--border);border-radius:10px;cursor:pointer;transition:border-color .15s;background:var(--bg);"
                             onmouseover="this.style.borderColor='var(--primary)';this.style.background='#EFF6FF'"
                             onmouseout="this.style.borderColor='var(--border)';this.style.background='var(--bg)'"
                         >
-                            <span style="font-size:36px;">📸</span>
+                            <!-- Camera / photo upload icon -->
                             <span style="font-size:12.5px;color:var(--text-muted);">JPG, PNG — maksimal 2 MB</span>
                             <input
                                 x-ref="photoInput"
@@ -145,9 +170,14 @@
                     </div>
 
                     <!-- ACTIONS -->
-                    <div style="display:flex;align-items:center;gap:12px;padding-top:8px;border-top:1px solid var(--border);margin-top:4px;">
-                        <button type="submit" class="btn btn-accent" style="padding:11px 24px;font-size:14px;">
-                            🚀 Kirim Laporan
+                    <div style="display:flex;align-items:center;gap:12px;padding-top:14px;solid var(--border);margin-top:4px;">
+                        <button type="submit" class="btn btn-accent" style="padding:11px 24px;font-size:14px;display:inline-flex;align-items:center;gap:7px;">
+                            <!-- Send / rocket icon -->
+                            <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="22" y1="2" x2="11" y2="13"/>
+                                <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                            </svg>
+                            Kirim Laporan
                         </button>
                         <a href="{{ route('citizen.dashboard') }}" class="btn btn-outline">Batal</a>
                     </div>
@@ -155,11 +185,21 @@
             </div>
         </div>
 
+        <!-- SIDEBAR -->
+        <div>
             <!-- Status Info -->
             <div style="background:#FEF3C7;border:1px solid #FCD34D;border-radius:10px;padding:14px 16px;">
-                <div style="font-size:13px;font-weight:600;color:#92400E;margin-bottom:4px;">⏳ Status Awal: Menunggu</div>
+                <div style="font-size:13px;font-weight:600;color:#92400E;margin-bottom:4px;display:flex;align-items:center;gap:6px;">
+                    <!-- Clock icon -->
+                    <svg width="14" height="14" fill="none" stroke="#92400E" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                    Status Awal: Menunggu
+                </div>
                 <div style="font-size:12.5px;color:#B45309;line-height:1.6;">Laporan baru Anda akan berstatus <strong>Pending</strong> dan belum tampil di public feed hingga diverifikasi admin.</div>
             </div>
         </div>
+
     </div>
 </x-app-layout>
